@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            color: #c4ffbb;
+            background-color: #393be6;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #c4ffbb;
+            color: #393be6;
+            border: none;
+            border-radius: 5px;
+        }
+        #question {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #response {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #f4cf72;
+        }
+        #counter {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Niveau quatrième</h1>
+    <button onclick="displayQuestion()">Afficher Question</button>
+    <div id="counter">0 / 90</div>
+    <div id="question"></div>
+    <div id="response"></div>
+
+    <script>
+        const questions = [
+            { question: "Quelle est la nature du mot « heureusement » dans la phrase : « Heureusement, il a réussi son examen » ?", response: "adverbe" },
+            { question: "Quel est le genre du mot « table » ?", response: "féminin" },
+            { question: "Quel temps est utilisé dans la phrase : « Il mangea son goûter » ?", response: "passé simple" },
+            { question: "Quelle est la fonction du mot « chien » dans la phrase : « Le chien aboie » ?", response: "sujet" },
+            { question: "Donne un synonyme du mot « triste ».", response: "malheureux" },
+            { question: "Quel est le pluriel de « journal » ?", response: "journaux" },
+            { question: "Cite un exemple de pronom personnel.", response: "il, elle, nous, vous, etc." },
+            { question: "Donne le féminin du mot « acteur ».", response: "actrice" },
+            { question: "Quel est le nom du héros du roman 'Le Comte de Monte-Cristo' ?", response: "Edmond Dantès" },
+            { question: "Dans la phrase « La fleur que j’ai cueillie est belle », quel mot est une proposition subordonnée relative ?", response: "que j’ai cueillie" },
+            { question: "Quel est le nom du célèbre recueil de fables qui utilise des animaux comme personnages ?", response: "Les Fables de La Fontaine" },
+            { question: "Quelle est la valeur de 7 × 9 ?", response: "63" },
+            { question: "Quel est le résultat de 54 ÷ 9 ?", response: "6" },
+            { question: "Quel est le périmètre d’un carré de côté 6 cm ?", response: "24 cm" },
+            { question: "Combien font 4,5 + 3,7 ?", response: "8,2" },
+            { question: "Quel est le double de 18 ?", response: "36" },
+            { question: "Quel est le volume d'un cube dont l'arête mesure 3 cm ?", response: "27 cm³" },
+            { question: "Quel est l’angle droit dans un triangle rectangle ?", response: "90°" },
+            { question: "Quelle est la formule pour calculer l’aire d’un rectangle ?", response: "longueur × largeur" },
+            { question: "Quel est le résultat de 13² ?", response: "169" },
+            { question: "Quel est le plus petit nombre premier ?", response: "2" },
+            { question: "Quel est le résultat de 5³ ?", response: "125" },
+            { question: "Qui a été le premier empereur romain ?", response: "Auguste" },
+            { question: "Quelle est la capitale du Canada ?", response: "Ottawa" },
+            { question: "Quel grand voyageur vénitien a parcouru l’Asie au XIIIe siècle ?", response: "Marco Polo" },
+            { question: "Quel est le nom du fleuve qui traverse Vienne en Autriche ?", response: "Le Danube" },
+            { question: "Qu’est-ce que la Déclaration des droits de l’homme et du citoyen ?", response: "Un texte fondamental de la Révolution française proclamant les droits de l’homme" },
+            { question: "Cite un pays d’Océanie.", response: "Australie, Nouvelle-Zélande, Fidji, Samoa, etc." },
+            { question: "En quelle année a eu lieu la Révolution française ?", response: "1789" },
+            { question: "Quelle est la monnaie de l’Italie ?", response: "L’euro (depuis 2002)" },
+            { question: "Qu’est-ce qu’un citoyen ?", response: "Une personne qui a des droits et des devoirs dans un pays" },
+            { question: "Quelle est la plus grande chaîne de montagnes d’Europe ?", response: "Les Alpes" },
+            { question: "Quel est le nom de famille du premier empereur français ?", response: "Bonaparte" },
+            { question: "Quelle est la planète la plus éloignée du Soleil ?", response: "Neptune" },
+            { question: "Quel gaz les plantes absorbent-elles lors de la photosynthèse ?", response: "Le dioxyde de carbone (CO₂)" },
+            { question: "Quel organe filtre le sang dans le corps humain ?", response: "Les reins" },
+            { question: "Quel est l’état de l’eau à température ambiante ?", response: "Liquide" },
+            { question: "Quelle est l’énergie d’entrée d’une pompe à eau ?", response: "L’énergie électrique" },
+            { question: "Quel est le nom de l'appareil utilisé pour mesurer la tension électrique ?", response: "Un voltmètre" },
+            { question: "Quel est l’organe principal de la respiration chez l’humain ?", response: "Les poumons" },
+            { question: "Quel est le nom de la force qui nous attire vers le centre de la Terre ?", response: "La gravité" },
+            { question: "Quel est le nom de l'élément chimique représenté par le symbole 'O' ?", response: "L’oxygène" },
+            { question: "Quel est le rôle des abeilles dans la nature ?", response: "La pollinisation" },
+            { question: "Quel métal est de couleur brun/orange utilisé pour faire les pièces ?", response: "Le cuivre" },
+            { question: "How do you say « bonjour » in English?", response: "Hello" },
+            { question: "How do you say « merci » in English?", response: "Thank you" },
+            { question: "What is the past tense of the verb 'go'?", response: "Went" },
+            { question: "What is the capital of the United Kingdom?", response: "London" },
+            { question: "Who wrote 'Romeo and Juliet'?", response: "William Shakespeare" },
+            { question: "What is the capital of the United States of America?", response: "Washington D.C." },
+            { question: "¿Cómo se dice « bonjour » en español?", response: "Hola" },
+            { question: "¿En qué ciudad juega el Real Betis?", response: "Sevilla" },
+            { question: "¿Cómo se dice « orange » en español?", response: "Naranja" },
+            { question: "¿Cuál es la capital de España?", response: "Madrid" },
+            { question: "¿Cómo se dice « chien » en español?", response: "Perro" },
+            { question: "Come si dice « bonjour » in italiano?", response: "Ciao ou Buongiorno" },
+            { question: "Comment s’appelle le championnat italien de Foot?", response: "La serie A" },
+            { question: "Come si dice « huit » in italiano?", response: "Otto" },
+            { question: "Come si dice « ma famille » in italiano?", response: "La mia famiglia" },
+            { question: "In quale città si trova il Colosseo?", response: "Roma" },
+            { question: "Quel artiste a peint la Joconde ?", response: "Léonard de Vinci" },
+            { question: "Quel est le nom du mouvement artistique représenté par Picasso ?", response: "Cubisme" },
+            { question: "Qu’est-ce qu’une nature morte ?", response: "Un tableau représentant des objets inanimés" },
+            { question: "Quel artiste est célèbre pour ses peintures de tournesols ?", response: "Vincent van Gogh" },
+            { question: "Qu’est-ce qu’un croquis ?", response: "Un dessin rapide, souvent préparatoire" },
+            { question: "À quel mouvement artistique appartient Henri Matisse ?", response: "Le fauvisme" },
+            { question: "Quel instrument de musique à cordes est utilisé dans le jazz ?", response: "La contrebasse" },
+            { question: "Quel compositeur a écrit la 5e Symphonie ?", response: "Ludwig van Beethoven" },
+            { question: "Quel est le nom d’un groupe de musique français célèbre pour « Dernière danse » ?", response: "Indochine" },
+            { question: "Quel est le style musical de Mozart ?", response: "Classique" },
+            { question: "Qui est le célèbre chanteur français connu pour la chanson 'La Vie en rose' ?", response: "Édith Piaf" },
+            { question: "Quel est le nom du héros du manga 'One Piece' ?", response: "Monkey D. Luffy" },
+            { question: "Quel sport est pratiqué lors du Tournoi de Roland-Garros ?", response: "Le tennis" },
+            { question: "Qui est le créateur de la bande dessinée 'Lucky Luke' ?", response: "Morris" },
+            { question: "Quelle émission de télévision présente des candidats vivant ensemble dans une maison ?", response: "Secret Story" },
+            { question: "Quel est le nom du dessin animé mettant en scène des chiots qui sauvent la grande vallée ?", response: "Pat' Patrouille ou Paw Patrol" },
+            { question: "Quel jeu vidéo met en scène un héros nommé Link ?", response: "The Legend of Zelda" },
+            { question: "Quel jeu de société consiste à trouver des mots commençant par la même lettre ?", response: "Le petit bac" },
+            { question: "Quel groupe de musique est connu pour la chanson 'Bohemian Rhapsody' ?", response: "Queen" },
+            { question: "Quel est le nom du célèbre monument situé au centre de Toulouse ?", response: "Le Capitole" },
+            { question: "Quel manga raconte l'histoire d'un jeune garçon nommé Ichigo Kurosaki devenant un Shinigami ?", response: "Bleach" },
+            { question: "Quel sport utilise une balle et une batte ?", response: "Le baseball" },
+            { question: "Quelle émission de télévision française est animée par Jean-Luc Reichmann et met en compétition des candidats sur des questions de culture générale ?", response: "Les 12 Coups de midi" },
+            { question: "Quel dessin animé met en scène des animaux vivant dans une jungle indienne ?", response: "Le Livre de la Jungle" },
+            { question: "Quel jeu de société consiste à construire des routes et des villages ?", response: "Les Colons de Catane" },
+            { question: "Quel chanteur français est connu pour la chanson 'L'Aventurier' ?", response: "Indochine" },
+            { question: "Quel est le nom du célèbre stade de rugby situé à Toulouse ?", response: "Le Stadium" },
+            { question: "Quel manga raconte l'histoire d'un jeune alchimiste nommé Edward Elric ?", response: "Fullmetal Alchemist" },
+            { question: "Quel sport se pratique aux Fénix de Toulouse ?", response: "Le handball" },
+            { question: "Dans 'La Petite Sirène', comment s'appelle le poisson rouge, ami d'Ariel ?", response: "Polochon" }
+        ];
+
+        let displayedQuestions = [];
+        let counter = 0;
+
+        function displayQuestion() {
+            if (counter >= questions.length) {
+                alert("Toutes les questions ont été affichées !");
+                return;
+            }
+
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * questions.length);
+            } while (displayedQuestions.includes(randomIndex));
+
+            displayedQuestions.push(randomIndex);
+            const questionObj = questions[randomIndex];
+
+            document.getElementById("question").textContent = questionObj.question;
+            document.getElementById("response").textContent = "Réponse : " + questionObj.response;
+            counter++;
+            document.getElementById("counter").textContent = counter + " / " + questions.length;
+        }
+    </script>
+</body>
+</html>
