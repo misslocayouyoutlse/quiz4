@@ -1,7 +1,9 @@
+<!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>Quiz avec Score</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,14 +34,60 @@
             margin-top: 20px;
             font-size: 18px;
         }
+        .teams-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .team {
+            text-align: center;
+        }
+        .score {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .winner {
+            border: 3px solid gold;
+            padding: 10px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Niveau quatrième</h1>
+    <h1>niveau quatrième </h1>
     <button onclick="displayQuestion()">Afficher Question</button>
     <div id="counter">0 / 90</div>
     <div id="question"></div>
     <div id="response"></div>
+
+    <div class="teams-container">
+        <div class="team" id="team1">
+            <h2>Équipe 1</h2>
+            <p id="score1" class="score">0</p>
+            <button onclick="incrementScore(1)">+1</button>
+        </div>
+        <div class="team" id="team2">
+            <h2>Équipe 2</h2>
+            <p id="score2" class="score">0</p>
+            <button onclick="incrementScore(2)">+1</button>
+        </div>
+        <div class="team" id="team3">
+            <h2>Équipe 3</h2>
+            <p id="score3" class="score">0</p>
+            <button onclick="incrementScore(3)">+1</button>
+        </div>
+        <div class="team" id="team4">
+            <h2>Équipe 4</h2>
+            <p id="score4" class="score">0</p>
+            <button onclick="incrementScore(4)">+1</button>
+        </div>
+        <div class="team" id="team5">
+            <h2>Équipe 5</h2>
+            <p id="score5" class="score">0</p>
+            <button onclick="incrementScore(5)">+1</button>
+        </div>
+    </div>
 
     <script>
         const questions = [
@@ -141,6 +189,7 @@
         function displayQuestion() {
             if (counter >= questions.length) {
                 alert("Toutes les questions ont été affichées !");
+                determineWinner();
                 return;
             }
 
@@ -156,6 +205,31 @@
             document.getElementById("response").textContent = "Réponse : " + questionObj.response;
             counter++;
             document.getElementById("counter").textContent = counter + " / " + questions.length;
+        }
+
+        function incrementScore(teamNumber) {
+            var scoreElement = document.getElementById('score' + teamNumber);
+            var score = parseInt(scoreElement.textContent);
+            scoreElement.textContent = score + 1;
+        }
+
+        function determineWinner() {
+            let maxScore = -1;
+            let winningTeams = [];
+
+            for (let i = 1; i <= 5; i++) {
+                let score = parseInt(document.getElementById('score' + i).textContent);
+                if (score > maxScore) {
+                    maxScore = score;
+                    winningTeams = [i];
+                } else if (score === maxScore) {
+                    winningTeams.push(i);
+                }
+            }
+
+            winningTeams.forEach(teamNumber => {
+                document.getElementById('team' + teamNumber).classList.add('winner');
+            });
         }
     </script>
 </body>
